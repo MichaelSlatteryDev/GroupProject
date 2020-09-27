@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.softwaredev.groupproject.CreateCarerAccount">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimaryDark"
+            android:layout_alignParentTop="true"
+            android:text="Carer Information"
+            android:id="@+id/CarerHead"
+            android:textSize="25sp"
+            android:textStyle="bold"/>
+
+        <RelativeLayout
+            android:layout_below="@+id/CarerHead"
+            android:id="@+id/carerSection"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:id="@+id/CarerFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="First Name: "
+                android:layout_alignBaseline="@+id/EnterCarerFName"
+                android:layout_alignBottom="@+id/EnterCarerFName" />
+
+            <EditText
+                android:id="@+id/EnterCarerFName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/CarerLastName"
+                android:layout_below="@+id/EnterCarerFName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last Name: "
+                android:layout_alignBaseline="@+id/EnterCarerLName"
+                android:layout_alignBottom="@+id/EnterCarerLName" />
+
+            <EditText
+                android:id="@+id/EnterCarerLName"
+                android:layout_below="@+id/EnterCarerFName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/password"
+                android:layout_below="@+id/EnterCarerLName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password: "
+                android:layout_alignBaseline="@+id/enterPassword"
+                android:layout_alignBottom="@+id/enterPassword" />
+
+            <EditText
+                android:id="@+id/enterPassword"
+                android:layout_below="@+id/EnterCarerLName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/phoneNo"
+                android:layout_below="@+id/enterPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone Number: "
+                android:layout_alignBaseline="@+id/enterPhone"
+                android:layout_alignBottom="@+id/enterPhone" />
+
+            <EditText
+                android:id="@+id/enterPhone"
+                android:layout_below="@+id/enterPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_below="@+id/enterPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="E-mail Address: "
+                android:layout_alignBaseline="@+id/enterEmail"
+                android:layout_alignBottom="@+id/enterEmail" />
+
+            <EditText
+                android:id="@+id/enterEmail"
+                android:layout_below="@+id/enterPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_below="@+id/enterEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Address: "
+                android:layout_alignBaseline="@+id/line1"
+                android:layout_alignBottom="@+id/line1" />
+
+            <EditText
+                android:id="@+id/line1"
+                android:layout_below="@+id/enterEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/line2"
+                android:layout_below="@+id/line1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/lineCity"
+                android:layout_below="@+id/line2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/CreateCarer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lineCity"
+                android:layout_marginTop="15dp"
+                android:text="Add Patient"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

@@ -1,0 +1,167 @@
+<!DOCRTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<title>Add Carer</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	
+	<style>
+		label, input {
+		display: block;
+		}
+		
+		body {
+			background-color: #1e4d84;
+		}
+		
+		.jumbotron{
+			border: 1px solid black;
+			background-color: white;
+			padding-left: 2em;	
+		}
+	
+	</style>
+	
+	<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">VCA</a>
+				</div>
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="HomePage.html">Home</a></li>
+					<li class ="active"><a href="allPatients.html">View Patients</a></li>
+					<li class ="active"><a href="allCarers.html">View Carers</a></li>
+					<li class ="active"><a href="addCarer.html">Create Carer</a></li>
+					<li class ="active"><a href="UpdateValues.html">Update Values</a></li>
+				</ul>	
+			</div>
+		</nav>
+	
+	</head>
+	<body>
+		<div class="container">
+			<h2 style="color: #ffffff;">Carer Account Creation</h2>
+			
+			<div class="page-header">
+			
+			</div>
+			<div class="jumbotron">
+
+				
+				<!--The button calls the "update" function. The names in the form are uploaded to the database. -->
+				<form name="addCarer" class="form1">
+				  <label>
+				  Name: <input type="text" id="Name"><br>
+				  </label>
+				  <label>
+				  Phone Number: <input type="number" id="PhoneNo"><br>
+				  </label>
+				  <label>
+				  Email:	<input type="email" id="E-mail"><br>
+				  </label>
+				  <label>
+				  Password: <input type="password" id="Password"><br>
+				  </label>
+				  <label>
+				  Address:	<input type="text" id="AddressLine1" placeholder="Line1"><br>
+							<input type="text" id="AddressLine2" placeholder="Line2"><br>
+							<input type="text" id="AddressCity" placeholder="City"><br>
+				  </label>
+				  <label>
+				  Geotagging: <br> Yes <input type="radio" name="test" id="Geo" value="yes">
+				  No <input type="radio" name="test" id="Geo" value="no"><br> 
+				  </label>
+				  <br>
+				  <button id="formButton" class="btn btn-default" onclick="return update()">Submit</button>
+				</form>
+				
+			</div>
+		</div>
+		<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+		<script>
+			var dataRef = new Firebase('https://rd-year-group-project.firebaseio.com');
+			
+		// Save data to firebase
+		function update(){
+			
+			var name = document.getElementById("Name").value;
+            var email = document.getElementById("E-mail").value;
+			var phone = document.getElementById("PhoneNo").value;
+            var password = document.getElementById("Password").value;
+			var geo = document.getElementById("Geo").value;
+			var address = document.getElementById("AddressLine1").value + ', ' + document.getElementById("AddressLine2").value + ', ' + document.getElementById("AddressCity").value;
+			var carerID = 'Carer';
+			var max = 0;
+			var tableRef = dataRef.child("users/Carers").ref();
+			// Retrieve new posts as they are added to our database
+			tableRef.on("value", function(snapshot) {
+				snapshot.forEach(function(childSnapshot) {
+					carerID = childSnapshot.key();
+					
+					var splitVar = carerID.split('Carer');
+					var valueOfNum = splitVar[1];
+					var newNum = Number(valueOfNum) + 1;
+
+					if(max < newNum){
+						max = newNum;
+					}
+				});
+				  
+			});
+			
+			setTimeout(function(){
+			
+				var fields = ["Name", "E-mail", "PhoneNo", "Password", "Geo", "AddressLine1", "AddressLine2", "AddressCity"]
+
+				var i, l = fields.length;
+				var fieldname;
+				for (i = 0; i < l; i++) {
+				fieldname = fields[i];
+					if (document.forms["addCarer"][fieldname].value === "") {
+						alert(fieldname + " can not be empty");
+						return false;
+					} else if(i == l-1){
+						var username = 'users/Carers/' + 'Carer' + max;
+			
+						dataRef.child(username).set({
+							Email: email,
+							Password: password,
+							Name: name,
+							PhoneNo: phone,
+							Geo: geo,
+							ID: 'Carer' + max,
+							Address: address
+						});
+						
+						location.reload();
+					}
+				}
+			}, 1000);
+			return false;
+		}		
+			
+		</script>
+		<!--
+		The following code is not implemented yet but will be helpful for logging in
+		// For user authentication
+		function authHandler(error, authData) {
+		if (error) {
+		console.log('Login Failed!', error);
+		} else {
+		}
+		}
+
+		// Log the user in with an email combination
+		dataRef.authWithPassword({
+			email    : 'mail@mail.com',
+			password : 'pass'
+			}, authHandler);
+
+		dataRef.onAuth(function(authData) {
+		userId = authData.uid;
+		});
+		-->
+		
+	</body>
+</html>
+

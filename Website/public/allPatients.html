@@ -1,0 +1,240 @@
+<!DOCRTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>All Patients</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="style.css">
+	
+		<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+		<script type="text/javascript">
+		
+			var dataRef = new Firebase('https://rd-year-group-project.firebaseio.com');
+			var carerName;
+			var carerId;
+			var patientId;
+			var carerEmail;
+			
+			var carerPhone;
+			var phoneNo;
+			var name;
+			var arrayPatient = [];
+			var arrayElements = [];
+			
+			function loadPatient(){
+				var tableRef = dataRef.child("users/Patients").ref();
+					tableRef.on("child_added", function(snapshot) {
+						snapshot.forEach(function(childSnapshot){
+							var patientRef = dataRef.child("users/Patients").ref();
+							patientRef.on("value", function(snapshot2) {
+								snapshot.forEach(function(childSnapshot2) {
+									var childData = childSnapshot2.key();
+									//console.log(childSnapshot.key());
+									if(childData == "CarerID"){
+										carerId = childSnapshot2.val();
+									}
+									if(childData == "PatientID"){
+										patientId = childSnapshot2.val();
+									}
+									if(childData == "Carer Name"){
+										carerName = childSnapshot2.val();
+									}
+									if(childData == "Phone Number"){
+										phoneNo = childSnapshot2.val();
+									}
+									if(childData == "Name"){
+										name = childSnapshot2.val();
+									}
+									
+								});
+							});
+						});
+						patientRow=document.createElement("tr");
+						patientIdCell = document.createElement("td");
+						nameCell = document.createElement("td");
+						phoneNoCell = document.createElement("td");
+						carerNameCell = document.createElement("td");
+						carerIdCell = document.createElement("td");
+						
+						patientIdText=document.createTextNode(patientId);
+						nameText=document.createTextNode(name);
+						phoneNoText=document.createTextNode(phoneNo);
+						carerNameText=document.createTextNode(carerName);
+						carerIdText=document.createTextNode(carerId);
+						
+						patientIdCell.appendChild(patientIdText);
+						nameCell.appendChild(nameText);
+						phoneNoCell.appendChild(phoneNoText);
+						carerNameCell.appendChild(carerNameText);
+						carerIdCell.appendChild(carerIdText);
+						
+						patientRow.appendChild(patientIdCell);
+						patientRow.appendChild(nameCell);
+						patientRow.appendChild(phoneNoCell);
+						patientRow.appendChild(carerNameCell);
+						patientRow.appendChild(carerIdCell);
+						arrayPatient.push(patientRow);
+					});
+					
+			}
+			
+			function addRowHandlers() {
+						
+				var rows = document.getElementById("patientTable").rows;
+				for (i = 0; i < rows.length; i++) {
+					rows[i].onclick = function(){ return function(){
+						var id = this.cells[0].innerHTML;
+						PatientName = document.getElementById("PatientName");
+						PatientID = document.getElementById("PatientID");					
+						PatientPhoneNo = document.getElementById("PatientPhoneNo");					
+						PatientAddress = document.getElementById("PatientAddress");					
+						CarerName = document.getElementById("CarerName");					
+						CarerID = document.getElementById("CarerID");					
+						DateOfBirth = document.getElementById("DateOfBirth");					
+						Eircode = document.getElementById("Eircode");					
+						LeftGeo = document.getElementById("LeftGeo");
+						
+						var tableRef = dataRef.child("users/Patients").ref();
+						tableRef.on("child_added", function(snapshot) {
+							snapshot.forEach(function(childSnapshot){
+								if(snapshot.key() == id){
+									var patientRef = dataRef.child("users/Patients").ref();
+									patientRef.on("value", function(snapshot2) {
+										snapshot.forEach(function(childSnapshot2) {
+											var childData = childSnapshot2.key();
+											if(childData == "CarerID"){
+												carerId = childSnapshot2.val();
+												CarerID.innerHTML = carerId;
+											}
+											if(childData == "PatientID"){
+												patientId = childSnapshot2.val();
+												PatientID.innerHTML = patientId;
+											}
+											if(childData == "Carer Name"){
+												carerName = childSnapshot2.val();
+												CarerName.innerHTML = carerName;
+											}
+											if(childData == "Phone Number"){
+												phoneNo = childSnapshot2.val();
+												PatientPhoneNo.innerHTML = phoneNo;
+											}
+											if(childData == "Name"){
+												name = childSnapshot2.val();
+												PatientName.innerHTML = name;
+											}
+											if(childData == "Address"){
+												address = childSnapshot2.val();
+												PatientAddress.innerHTML = address;
+											}
+											if(childData == "Date of Birth"){
+												dateOfBirth = childSnapshot2.val();
+												DateOfBirth.innerHTML = dateOfBirth;
+											}
+											if(childData == "Eircode"){
+												eircode = childSnapshot2.val();
+												Eircode.innerHTML = eircode;
+											}
+											if(childData == "Left Geo"){
+												leftGeo = childSnapshot2.val();
+												LeftGeo.innerHTML = leftGeo;
+											}
+										});
+									});
+								}
+							});
+						});										
+						rows[i].style.backgroundColor = "#000000";
+					};}(rows[i]);
+				}
+			}
+			
+			window.onload = function check(){
+				loadPatient();
+				tabBody=document.getElementById("patientTable");
+				setTimeout(function(){
+					for(i = 0; i < arrayPatient.length; i++){
+						tabBody.appendChild(arrayPatient[i]);
+					}
+					
+					addRowHandlers();
+					
+				}, 1000);
+			}
+		</script>
+		
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">VCA</a>
+				</div>
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="HomePage.html">Home</a></li>
+					<li class ="active"><a href="allPatients.html">View Patients</a></li>
+					<li class ="active"><a href="allCarers.html">View Carers</a></li>
+					<li class ="active"><a href="addCarer.html">Create Carer</a></li>
+					<li class ="active"><a href="UpdateValues.html">Update Values</a></li>
+				</ul>
+				
+			</div>
+		</nav>
+		
+	</head>
+	<body>
+		<div class="container-full">
+			<div class="row">
+				<div class="col-xs-6 patientOverFlow">
+					<table class="table table-fixed" id="patientTable"  border="1">
+						<thead>
+							<tr>
+								<th colspan="5">All Patients</th>
+							</tr>
+							<tr>
+								<th>Patient ID</th>
+								<th>Name</th>
+								<th>Phone No</th>
+								<th>Carer Name</th>
+								<th>Carer ID</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+						</tbody>
+					</table>
+				</div>
+				<div class="col-xs-6 patientOverFlow">
+					<div class="jumbotron container-fluid" align="left">
+						<label>Name: </label>
+						<label id="PatientName" class="desc"> </label>
+						<br>
+						<label>ID: </label>
+						<label id="PatientID" class="desc"> </label>
+						<br>
+						<label>Phone No: </label>
+						<label id="PatientPhoneNo" class="desc"> </label>
+						<br>
+						<label>Address: </label>
+						<label id="PatientAddress" class="desc"> </label>
+						<br>
+						<label>Carer Name: </label>
+						<label id="CarerName" class="desc"> </label>
+						<br>
+						<label>Carer ID: </label>
+						<label id="CarerID" class="desc"> </label>
+						<br>
+						<label>Date of Birth: </label>
+						<label id="DateOfBirth" class="desc"> </label>
+						<br>
+						<label>Eircode: </label>
+						<label id="Eircode" class="desc"> </label>
+						<br>
+						<label>Left Geo: </label>
+						<label id="LeftGeo" class="desc"> </label>
+						<br>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</body>
+</html>

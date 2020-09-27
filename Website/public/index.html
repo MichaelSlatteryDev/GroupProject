@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<title>Login Page</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- Own css link must be under bootstrap for it to take effect. -->
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<style>
+		label, input {
+			display: block;
+			width: 15em;
+		}
+	</style>
+	</head>
+	<body>
+		<div class="container" align="center">
+			
+			<div class="jumbotron container-fluid" align="left">
+                <h1>Sign In</h1>
+				
+				<!--The button calls the "signIn" function. The values are checked in firebase. -->
+                    <form class="form1">
+                        <label>
+                            UserName
+                            <input type="text" id="userName">
+                        </label>
+                        <label>
+                            Password 
+                            <input type="password" id="password"><br>
+                        </label>
+                        <!-- Geotagging: <input type="radio" name="test" id="test" value="yes"> Yes -->
+                        <!-- <input type="radio" name="test" id="test" value="no"> No<br> -->
+						<!-- if signIn() returns true sign in to home page.-->
+                        <button id="formButton" onclick="return signIn()">Sign In</button>
+                    </form>
+			</div>
+		</div>
+
+		<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+		<script>
+			var dataRef = new Firebase('https://rd-year-group-project.firebaseio.com');
+			
+			function signIn(){
+
+				var userName = document.getElementById("userName").value;
+				var password = document.getElementById("password").value;
+				var correctUser = false;
+				var correctPass = false;
+
+				//Checks the user/SystemAdmin table in firebase.
+				//child_added to check children in SystemAdmin.
+				//forEach checks each key in SystemAdmin.
+				
+				var userNameRef = dataRef.child("users/SystemAdmin").ref();
+				userNameRef.on("child_added", function(snapshot) {
+					snapshot.forEach(function(childSnapshot) {
+						//I use snapshot instead of childSnapshot because I only want to find usernames for this part not the values inside the username which is another table.
+						//I also use .key() instead of .val() since I am not interested in the values inside the username table.
+						var childData = snapshot.key();
+						if(childData == userName){
+							correctUser = true;
+						}
+					});
+				});
+
+				var passwordRef = dataRef.child("users/SystemAdmin").ref();
+				passwordRef.on("child_added", function(snapshot) {
+					snapshot.forEach(function(childSnapshot) {
+						//Use childSnapshot here to check values inside table.
+						//Use .val() to get the value instead of the key.
+						var childData = childSnapshot.val();
+						if(childData == password && childSnapshot.key() == "password" && correctUser == true){
+							document.location.href = "HomePage.html";
+						}
+					});
+				});
+
+				return correctPass;
+			}
+			
+			
+		</script>
+		<!--
+		The following code is not implemented yet but will be helpful for logging in
+		// For user authentication
+		function authHandler(error, authData) {
+		if (error) {
+		console.log('Login Failed!', error);
+		} else {
+		}
+		}
+
+		// Log the user in with an email combination
+		dataRef.authWithPassword({
+			email    : 'mail@mail.com',
+			password : 'pass'
+			}, authHandler);
+
+		dataRef.onAuth(function(authData) {
+		userId = authData.uid;
+		});
+		-->
+		
+	</body>
+</html>

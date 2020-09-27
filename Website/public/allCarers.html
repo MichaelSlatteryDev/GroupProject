@@ -1,0 +1,210 @@
+<!DOCRTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>All Carers</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="style.css">
+	
+		<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+		<script type="text/javascript">
+		
+			var dataRef = new Firebase('https://rd-year-group-project.firebaseio.com');
+			var carerName;
+			var carerId;
+			var patientId;
+			var carerEmail;
+			var address;
+			var carerPhone;
+			var phoneNo;
+			var name;
+			var push = false;
+			var pushC = false;
+			var arrayPatient = [];
+			var arrayCarer = [];
+			var pastCarers = [];
+			
+			function loadPatient(){
+				var tableRef = dataRef.child("users/Carers").ref();
+					tableRef.on("child_added", function(snapshot) {
+						snapshot.forEach(function(childSnapshot){
+							var patientRef = dataRef.child("users/Carers").ref();
+							patientRef.on("value", function(snapshot2) {
+								snapshot.forEach(function(childSnapshot2) {
+									var childData = childSnapshot2.key();
+									//console.log(childSnapshot.key());
+									if(childData == "ID"){
+										carerId = childSnapshot2.val();
+									}
+									if(childData == "PhoneNo"){
+										carerPhone = childSnapshot2.val();
+									}
+									if(childData == "Name"){
+										carerName = childSnapshot2.val();
+									}
+									if(childData == "Email"){
+										carerEmail = childSnapshot2.val();
+									}
+									push = true;
+								});
+							});
+						});
+						patientRow=document.createElement("tr");
+						nameCell = document.createElement("td");
+						patientIdCell = document.createElement("td");
+						phoneNoCell = document.createElement("td");
+						carerIdCell = document.createElement("td");
+						
+						patientIdText=document.createTextNode(carerId);
+						nameText=document.createTextNode(carerName);
+						phoneNoText=document.createTextNode(carerPhone);
+						carerIdText=document.createTextNode(carerEmail);
+						
+						patientIdCell.appendChild(patientIdText);
+						nameCell.appendChild(nameText);
+						phoneNoCell.appendChild(phoneNoText);
+						carerIdCell.appendChild(carerIdText);
+						
+						patientRow.appendChild(patientIdCell);
+						patientRow.appendChild(nameCell);
+						patientRow.appendChild(phoneNoCell);
+						patientRow.appendChild(carerIdCell);
+						if(push){
+							arrayPatient.push(patientRow);
+						}	
+					});
+					
+			}
+			
+			function addRowHandlers() {
+						
+				var rows = document.getElementById("patientTable").rows;
+				for (i = 0; i < rows.length; i++) {
+					rows[i].onclick = function(){ return function(){
+						var id = this.cells[0].innerHTML;
+						CarerID = document.getElementById("ID");					
+						PatientPhoneNo = document.getElementById("PhoneNo");					
+						Address = document.getElementById("Address");					
+						CarerName = document.getElementById("Name");					
+						CarerEmail = document.getElementById("Email");					
+						
+						var tableRef = dataRef.child("users/Carers").ref();
+						tableRef.on("child_added", function(snapshot) {
+							snapshot.forEach(function(childSnapshot){
+								console.log(snapshot.key());
+								if(snapshot.key() == id){
+									var patientRef = dataRef.child("users/Carers").ref();
+									patientRef.on("value", function(snapshot2) {
+										snapshot.forEach(function(childSnapshot2) {
+											var childData = childSnapshot2.key();
+											//console.log(childSnapshot.key());
+											if(childData == "ID"){
+												carerId = childSnapshot2.val();
+												CarerID.innerHTML = carerId;
+											}
+											if(childData == "Email"){
+												carerEmail = childSnapshot2.val();
+												CarerEmail.innerHTML = carerEmail;
+											}
+											if(childData == "PhoneNo"){
+												phoneNo = childSnapshot2.val();
+												PatientPhoneNo.innerHTML = phoneNo;
+											}
+											if(childData == "Name"){
+												carerName = childSnapshot2.val();
+												CarerName.innerHTML = carerName;
+											}
+											if(childData == "Address"){
+												address = childSnapshot2.val();
+												Address.innerHTML = address;
+											}
+										});
+									});
+								}
+							});
+						});										
+						
+					};}(rows[i]);
+				}
+			}
+			
+			window.onload = function check(){
+				loadPatient();
+				tabBody=document.getElementById("patientTable");
+				setTimeout(function(){
+					for(i = 0; i < arrayPatient.length; i++){
+						tabBody.appendChild(arrayPatient[i]);
+					}
+					
+					addRowHandlers();
+					
+				}, 1000);
+			}
+			
+		</script>
+		
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">VCA</a>
+				</div>
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="HomePage.html">Home</a></li>
+					<li class ="active"><a href="allPatients.html">View Patients</a></li>
+					<li class ="active"><a href="allCarers.html">View Carers</a></li>
+					<li class ="active"><a href="addCarer.html">Create Carer</a></li>
+					<li class ="active"><a href="UpdateValues.html">Update Values</a></li>
+				</ul>
+				
+			</div>
+		</nav>
+		
+	</head>
+	<body>
+		<div class="container-full">
+			<div class="row">
+				<div class="col-xs-4 patientOverFlow">
+					<table class="table table-fixed" id="patientTable"  border="1">
+						<thead>
+							<tr>
+								<th colspan="5">List of Carers</th>
+							</tr>
+							<tr>
+								<th>Carer ID</th>
+								<th>Name</th>
+								<th>Phone No</th>
+								<th>Email</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+						</tbody>
+					</table>
+				</div>
+				<div class="col-xs-6 patientOverFlow">
+					<div class="jumbotron container-fluid" align="left">
+						<label>Name: </label>
+						<label id="Name" class="desc"> </label>
+						<br>
+						<label>ID: </label>
+						<label id="ID" class="desc"> </label>
+						<br>
+						<label>Phone No: </label>
+						<label id="PhoneNo" class="desc"> </label>
+						<br>
+						<label>Address: </label>
+						<label id="Address" class="desc"> </label>
+						<br>
+						<label>Email: </label>
+						<label id="Email" class="desc"> </label>
+						<br>
+		
+						<br>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</body>
+</html>

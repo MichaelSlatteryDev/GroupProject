@@ -1,0 +1,51 @@
+body {
+	 background-color: #1e4d84;
+}
+
+button {
+	background-color: #77c8ff;
+	border: none;
+}
+
+label, input {
+	width: 15em;
+}
+
+th{
+	background-color: silver;
+}
+
+table{
+	background-color: #FFFFFF;
+}
+
+tr:hover {
+	background-color: #ffff99;
+}
+
+.desc{
+	padding: 1em;
+}
+
+.jumbotron{
+	border: 1px solid black;
+	background-color: white;
+	width: 40em;
+	padding-left: 2em;	
+}
+
+.container {
+	padding: 150px;
+}
+
+.patientOverFlow{
+	height: 600px;
+	overflow: auto;
+}
+.carerOverFlow{
+	height: 200px;
+	overflow: auto;
+}
+.container-full{
+	padding: 1em;
+}

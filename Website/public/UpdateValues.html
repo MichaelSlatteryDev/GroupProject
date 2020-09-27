@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Phone Numbers</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<!-- Own css link must be under bootstrap for it to take effect. -->
+		<link rel="stylesheet" type="text/css" href="style.css">
+		
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">VCA</a>
+				</div>
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="HomePage.html">Home</a></li>
+					<li class ="active"><a href="allPatients.html">View Patients</a></li>
+					<li class ="active"><a href="allCarers.html">View Carers</a></li>
+					<li class ="active"><a href="addCarer.html">Create Carer</a></li>
+					<li class ="active"><a href="UpdateValues.html">Update Values</a></li>
+				</ul>
+				
+			</div>
+		</nav>
+		
+	</head>
+	<body>
+		<div class="row">
+			<div class="col-sm-4" style = "padding-left:5%; padding-top:10%" >
+				<table id = "taxiTable" style="width:100%">
+					<tr>
+						<th>Taxi Company</th>
+						<th>Phone Number</th>
+					</tr>
+				</table>
+			</div>
+			
+			<div class="col-sm-4" style="padding-top:10%">
+				<table id = "shoppingTable" style="width:100%">
+					<tr >
+						<th>Shopping Company</th>
+						<th>Phone Number</th>
+					</tr>
+				</table>
+			</div>
+			
+			<div class="col-sm-4" style="padding-right:10%; padding-top:10%">
+				<table id = "takeAwayTable" style="width:100%">
+					<tr>
+						<th>Take Away Company</th>
+						<th>Phone Number</th>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</body>
+		<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+		<script>
+			var dataRef = new Firebase('https://rd-year-group-project.firebaseio.com');
+			
+			var arrayTaxi = [];
+			var arrayShopping = [];
+			var arrayTakeAway = [];
+			var name;
+			var phone;
+			var nameText;
+			var phoneText;
+			
+			window.onload = function check(){
+				loadTable("Taxis");
+				taxiBody=document.getElementById("taxiTable");
+				setTimeout(function(){
+					for(i = 0; i < arrayTaxi.length; i++){
+						taxiBody.appendChild(arrayTaxi[i]);
+					}
+				}, 1000);	
+				
+				loadTable("Shops");
+				shoppingBody=document.getElementById("shoppingTable");
+				setTimeout(function(){
+					for(i = 0; i < arrayShopping.length; i++){
+						shoppingBody.appendChild(arrayShopping[i]);
+					}
+				}, 1000);
+				
+				loadTable("Food");
+				takeAwayBody=document.getElementById("takeAwayTable");
+				setTimeout(function(){
+					for(i = 0; i < arrayTakeAway.length; i++){
+						takeAwayBody.appendChild(arrayTakeAway[i]);
+					}
+				}, 1000);
+			}
+				
+			function loadTable(newChild){
+			
+			var tableRef = dataRef.child("Phone No/" + newChild).ref();
+				tableRef.on("child_added", function(snapshot) {
+					snapshot.forEach(function(childSnapshot){
+						var tableRef2 = dataRef.child("Phone No/"  + newChild).ref();
+						tableRef2.on("value", function(snapshot2) {
+							snapshot.forEach(function(childSnapshot2) {
+								var childData = childSnapshot2.key();
+								console.log(childSnapshot.key());
+								if(childData == "Name"){
+									name = childSnapshot2.val();
+								}
+								if(childData == "Phone"){
+									phone = childSnapshot2.val();
+								}
+								
+								});
+							});
+						});
+
+					tableRow=document.createElement("tr");
+					
+					nameCell = document.createElement("td");
+					phoneCell = document.createElement("td");
+					
+					nameText=document.createTextNode(name);
+					phoneText=document.createTextNode(phone);
+					
+					nameCell.appendChild(nameText);
+					phoneCell.appendChild(phoneText);
+					
+					tableRow.appendChild(nameCell);
+					tableRow.appendChild(phoneCell);	
+					
+					if(newChild == "Taxis")
+					{
+						arrayTaxi.push(tableRow);
+					}
+					
+					else if(newChild == "Shops")
+					{
+						arrayShopping.push(tableRow);
+					}
+					
+					else if(newChild == "Food")
+					{
+						arrayTakeAway.push(tableRow);
+					}					
+				});
+				
+		}
+			
+			
+		</script>
